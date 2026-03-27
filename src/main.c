@@ -19,7 +19,7 @@ int main()
 
     // TODO: Uncomment the code below to pass the first stage
 
-    int server_fd;
+    int server_fd, new_socket;
     unsigned int client_addr_len;
 
     struct sockaddr_in client_addr;
@@ -63,8 +63,12 @@ int main()
     printf("Waiting for a client to connect...\n");
     client_addr_len = sizeof(client_addr);
 
-    accept(server_fd, (struct sockaddr *)&client_addr, &client_addr_len);
+    new_socket =
+        accept(server_fd, (struct sockaddr *)&client_addr, &client_addr_len);
     printf("Client connected\n");
+
+    char *response = "HTTP/1.1 200 OK\r\n\r\n";
+    send(new_socket, response, strlen(response), 0);
 
     close(server_fd);
 
